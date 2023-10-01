@@ -3,7 +3,16 @@ import 'package:flutter/material.dart';
 //local
 import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories.dart';
+import 'package:meals/screens/filters.dart';
 import 'package:meals/screens/meals.dart';
+import 'package:meals/widgets/main_drawer.dart';
+
+final kIntialFilters = {
+  Filter.isGlutenFree: false,
+  Filter.isLactoseFree: false,
+  Filter.isVegetarian: false,
+  Filter.isVegan: false,
+};
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -16,11 +25,13 @@ class _TabScreenState extends State<TabScreen> {
   var _currentPageIndex = 0;
   Widget? screen;
   final List<Meal> _favouriteMeals = [];
+  Map<Filter, dynamic> filters = kIntialFilters;
 
   @override
   void initState() {
     screen = CategoriesScreen(
       onSelectFavourite: _onAddFavourite,
+      filters: filters,
     );
     super.initState();
   }
@@ -53,10 +64,28 @@ class _TabScreenState extends State<TabScreen> {
     );
   }
 
+  void _onScreenSelectDrawer(String identifier) async {
+    Navigator.of(context).pop();
+
+    if (identifier == 'filters') {
+      final selectedFilters =
+          await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => FiltersScreen(
+          filters: filters,
+        ),
+      ));
+
+      setState(() {
+        filters = selectedFilters;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     screen = CategoriesScreen(
       onSelectFavourite: _onAddFavourite,
+      filters: filters,
     );
     if (_currentPageIndex == 1) {
       screen = MealsScreen(
@@ -69,6 +98,9 @@ class _TabScreenState extends State<TabScreen> {
         title: Text(
           _currentPageIndex == 0 ? 'Pick Your Category' : 'Favourites',
         ),
+      ),
+      drawer: MainDrawer(
+        onSelectScreen: _onScreenSelectDrawer,
       ),
       body: screen,
       bottomNavigationBar: BottomNavigationBar(
