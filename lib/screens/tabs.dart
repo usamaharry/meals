@@ -28,6 +28,8 @@ class _TabScreenState extends State<TabScreen> {
   void _onAddFavourite(Meal meal) {
     final isExisting = _favouriteMeals.contains(meal);
 
+    String message = "Meal removed from favourites";
+
     if (isExisting) {
       setState(() {
         _favouriteMeals.remove(meal);
@@ -35,8 +37,20 @@ class _TabScreenState extends State<TabScreen> {
     } else {
       setState(() {
         _favouriteMeals.add(meal);
+        message = "Meal added to favourites";
       });
     }
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(
+          seconds: 2,
+        ),
+      ),
+    );
   }
 
   @override
