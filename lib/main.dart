@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //local
 import 'package:meals/screens/tabs.dart';
@@ -8,7 +9,8 @@ import 'package:meals/screens/tabs.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const MyApp());
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 final theme = ThemeData(
