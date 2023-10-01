@@ -7,10 +7,12 @@ import 'package:meals/models/meal.dart';
 
 class MealListItem extends StatelessWidget {
   final Meal meal;
+  final void Function(Meal meal) onSelectFavourite;
 
   const MealListItem({
     super.key,
     required this.meal,
+    required this.onSelectFavourite,
   });
 
   String get complexityText {
@@ -30,6 +32,7 @@ class MealListItem extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => MealDetailScreen(
             meal: meal,
+            onSelectFavourite: onSelectFavourite,
           ),
         ));
       },

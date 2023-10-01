@@ -5,9 +5,12 @@ import 'package:meals/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
   final Meal meal;
+  final void Function(Meal meal) onSelectFavourite;
+
   const MealDetailScreen({
     super.key,
     required this.meal,
+    required this.onSelectFavourite,
   });
 
   @override
@@ -19,7 +22,9 @@ class MealDetailScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              onSelectFavourite(meal);
+            },
             icon: const Icon(
               Icons.star,
             ),
